@@ -1,0 +1,7 @@
+*.pyc
+*~
+__pycache__
+ts_env
+/static
+key.py
+.idea

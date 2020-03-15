@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block title %}<title>{{ ticket.subject }}</title>{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <h2>{{ ticket.subject }}</h2>
+
+<p>{{ ticket.text }}</p>
+<span
+        {% if ticket.status == 'New' %}
+        class="badge badge-pill badge-danger mt-3 mb-3">
+        {% elif ticket.status == 'Troubleshooting' %}
+        class="badge badge-pill badge-warning mt-3 mb-3">
+        {% else %}
+        class="badge badge-pill badge-success mt-3 mb-3">
+        {% endif %}
+        {{ ticket.status }}
+</span>
+                {% if user.is_authenticated and user.is_staff %}
+        <form  method="post">
+        {% csrf_token %}
+        {{ form_status }}
+     {% if ticket.status == 'New' %}
+            <button class="btn btn-info mt-3 mb-3">Take to work</button>
+     {% elif ticket.status == 'Troubleshooting' %}
+            <button class="btn btn-success mt-3 mb-3">Close Case</button>
+     {% endif %}
+        </form>
+        {% endif %}
+
+
+</div>
+    <div class="col-md-6"><p> Ticket create by: {{ ticket.creator }}</p>
+        {% if ticket.status != "Closed" %}
+
+        <small>You can upload files for additional information</small>
+        <br>
+    <a href="{% url 'tickets:add_file' ticket.pk %}"><button type="submit" class="btn btn-danger">Add</button></a>
+        <br>
+        <br>
+        <br>
+        {% if files %}
+        <small>Uploaded files: </small>
+        <br>
+        {% endif %}
+        {% for file in files %}
+
+    <a class='mt-3' href="{{file.file.url}}">- {{file}}</a>
+        <br>
+    {% endfor %}
+        {% endif %}
+    </div>
+
+</div>
+
+<h2>Discussion</h2>
+{% for comment in comments %}
+<div class="jumbotron">
+  <div class="container">
+    <h6>User: {{comment.creator}}</h6>
+    <p class="" style="color: #000000">Message: {{comment.message}}</p>
+      <small>Created: {{comment.created}}</small>
+  </div>
+</div>
+{% endfor %}
+
+{% if ticket.status != 'Closed' %}
+<form action="" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form%}
+    <button class="btn btn-success" type="submit">Comment</button>
+</form>
+{% endif %}
+{% endblock %}

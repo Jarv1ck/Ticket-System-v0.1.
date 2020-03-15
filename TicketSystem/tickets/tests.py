@@ -1,0 +1,8 @@
+from django.test import TestCase
+
+# Create your tests here.
+
+
+'''
+TODO: CREATE SOME TEST FOR PAGINATION, CASE CREATION, DELETING, UPDATING, CHANGE STATUS, ADDING COMMENT
+'''

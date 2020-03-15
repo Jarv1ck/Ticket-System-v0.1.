@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block title %} <title>Create user</title>{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-success" type="submit">Create user</button>
+</form>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block title %}<title>Tickets</title>{% endblock%}
+
+{% block content %}
+{% if not user.is_staff %}
+<a href="{% url 'tickets:create' %}"><button class="btn btn-info">Create New Case</button></a>
+{% endif %}
+
+<div class="line"></div>
+<div class="row">
+    {% if not user.is_staff %}
+{% for ticket in tickets %}
+<div class="col-md-4">
+<div class="card mb-3 ml-4" style="width: 18rem;">
+  <div class="card-body">
+      <a href="{% url 'tickets:detail' ticket.pk %}"> <h5 class="card-title">Ticket number #{{ ticket.id }}</h5></a>
+    <p class="card-subtitle mb-2 text-muted">{{ ticket.subject }}</p>
+    <p class="card-text"> {{ ticket.text|slice:":20"}}</p>
+<div class="row">
+      <div class="col-md-6"> <a href="{% url 'tickets:detail' ticket.pk %}" class="card-link">Detail</a> </div>
+
+      <div class="col-md-6">
+          <span
+                  {% if ticket.status == 'New'%}
+                       class="badge badge-pill badge-danger">
+                  {% elif ticket.status == 'Troubleshooting' %}
+                       class="badge badge-pill badge-warning">
+                  {% else %}
+                       class="badge badge-pill badge-success">
+                  {% endif %}
+              {{ ticket.status }}
+          </span>
+      </div>
+</div>
+       </div>
+</div>
+</div>
+{% endfor %}
+      {% else %}
+      {% for ticket in ticket_admin %}
+<div class="col-md-4 mb-4">
+<div class="card m-auto" style="width: 18rem;">
+  <div class="card-body m-auto">
+      <div class="row">
+          <div class="col-md-10">
+              <a href="{% url 'tickets:detail' ticket.pk %}">
+                  <h5 class="card-title">Ticket number #{{ ticket.id }}</h5>
+              </a>
+          </div>
+          <div class="col-md-2">
+              <a href="{% url 'tickets:delete' ticket.pk %}">
+                  <img src="{% static 'img/cancel.png' %}" alt="Delete" width="15px">
+              </a>
+          </div>
+
+      </div>
+
+
+
+    <h6 class="card-subtitle">{{ ticket.subject }}</h6>
+
+      <small>Product: {{ ticket.product }}</small>
+      <br>
+      <small>Created: {{ ticket.created }} </small>
+      <br>
+      <small>User: {{ ticket.creator }}</small>
+      <hr>
+
+<div class="row">
+      <div class="col-md-6"> <a href="{% url 'tickets:detail' ticket.pk %}" class="card-link">Detail</a> </div>
+
+      <div class="col-md-6">
+          <span
+                  {% if ticket.status == 'New'%}
+                       class="badge badge-pill badge-danger">
+                  {% elif ticket.status == 'Troubleshooting' %}
+                       class="badge badge-pill badge-warning">
+                  {% else %}
+                       class="badge badge-pill badge-success">
+                  {% endif %}
+              {{ ticket.status }}
+          </span>
+      </div>
+</div>
+       </div>
+</div>
+</div>
+{% endfor %}
+      {% endif %}
+
+
+</div>
+{% endblock %}

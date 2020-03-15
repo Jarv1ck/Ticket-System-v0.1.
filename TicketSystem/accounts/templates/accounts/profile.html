@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<p>USERNAME: {{user.username}}</p>
+<p>EMAIL: {{user.email}}</p>
+<p>FIRST NAME: {{user.first_name}}</p>
+<p>LAST NAME: {{user.last_name}}</p>
+{% endblock %}

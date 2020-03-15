@@ -1,0 +1,11 @@
+{% load static %}
+
+
+{% block content %} 
+<form method="POST">
+{% csrf_token %}
+Are you sure?
+<input type='submit', value='Yes'>
+</form>
+
+{% endblock %}
